@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'bootstrap3',
+
+    'advertisements',
 ]
 
 MIDDLEWARE = [
