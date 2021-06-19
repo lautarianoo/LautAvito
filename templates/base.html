@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>LAUT-AVITO</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <script src="https://js.stripe.com/v3/"></script>
+        <!-- Core theme CSS (includes Bootstrap)-->
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">LAUT-AVITO</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="#">Мои понравившиеся</a></li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        {% if not request.user.is_authenticated %}
+                            <li>
+                                <a class="navbar-link text-light" style="text-decoration: none" href="#">Авторизация</a>
+                            </li>
+                            <li>
+                                <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="#">Регистрация</a>
+                            </li>
+                        {% else %}
+                            <li style="margin-right: 20px">
+                                <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="#">Выйти</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            {% if request.user.is_authenticated %}
+                    <span class="badge badge-danger">
+                                    <a style="text-decoration: none; font-size: 14px;" href="#">{{ request.user.username }}</a>{% endif %}
+                                </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    {% block content %}
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
+                          <strong>{{ message }}</strong>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                <div class="row mb-3 mt-3">
+                {% for category in categories %}
+                    <div class="col-lg-4 col-md-6">
+                        <p><a href="{% url 'category_detail' slug=category.slug %}">{{ category.title }}</a></p>
+                    </div>
+                {% endfor %}
+                </div>
+             <hr>
+             <div class="row mt-5">
+              {% for advertise in advertises %}
+              <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                  <a href="#"><img class="card-img-top" src="{{ advertise.image.url }}" alt=""></a>
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}">{{ advertise.title }}</a>
+                    </h4>
+                     <h5>{{ advertise.price }} руб.</h5>
+                      <p style="color: #797770; margin-top: 20px;">{{ advertise.city.title }}. {{ advertise.district.title }}</p>
+                      <p style="color: #797770;">{{ advertise.date_add }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+        <!-- Footer-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+
+
+    </body>
+</html>

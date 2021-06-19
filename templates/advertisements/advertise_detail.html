@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row mt-4">
+    <h3>{{ advertise.title }}</h3>
+    <div class="col-md-4">
+        <img src="{{ advertise.image.url }}" alt="" class="img-fluid">
+    </div>
+    <div class="col-md-8">
+        <h3>{{ advertise.price }} ₽</h3>
+        <hr>
+        <a href="#"><button class="btn btn-success mb-3">Добавить в понравившиеся</button></a>
+    </div>
+    <hr>
+    <p><span style="color: #73716a;">Состояние: </span>{{ advertise.status }}</p>
+    <hr>
+    <p>г.{{ advertise.city }}, {{ advertise.street }}</p>
+    <p>{{ advertise.district }}</p>
+    <hr>
+        <p>{{ advertise.description }}</p>
+
+</div>
+
+{% endblock content %}

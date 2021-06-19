@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'bootstrap3',
 
     'advertisements',
+    'cities',
 ]
 
 MIDDLEWARE = [
