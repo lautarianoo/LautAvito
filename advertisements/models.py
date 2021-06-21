@@ -35,11 +35,14 @@ class Advertise(models.Model):
     title = models.CharField(verbose_name='Название объявления', max_length=100)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
     city = models.ForeignKey(City, verbose_name='Город', on_delete=models.CASCADE, related_name='advertises')
-    district = models.ForeignKey(District, verbose_name='Район', on_delete=models.SET_NULL, related_name='advertises', null=True)
-    street = models.ForeignKey(Street, verbose_name='Улица', on_delete=models.SET_NULL, blank=True, null=True)
+    district = models.ForeignKey(District, verbose_name='Район', on_delete=models.SET_NULL, related_name='advertises',
+                                 null=True)
+    street = models.ForeignKey(Street, verbose_name='Улица', on_delete=models.SET_NULL,
+                               blank=True, null=True)
     description = models.TextField(verbose_name='Описание товара', max_length=13000)
     image = models.ImageField(verbose_name='Картинка объявления')
-    price  = models.PositiveIntegerField(verbose_name='Цена', default=0, blank=True, null=True)
+    price  = models.PositiveIntegerField(verbose_name='Цена', default=0,
+                                         blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises', verbose_name='Продавец')
     status = models.CharField(verbose_name='Статус товара', choices=STATUS_PRODUCT, max_length=100)
     date_add = models.DateTimeField(verbose_name='Дата создания товара', auto_now_add=True)
@@ -66,3 +69,18 @@ class Advertise(models.Model):
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+
+class Cart(models.Model):
+    #Модель понравившихся товаров(корзина)
+
+    owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.CASCADE, null=True)
+    advertisements = models.ManyToManyField(Advertise, verbose_name='Товары', related_name='cart')
+    quality = models.PositiveIntegerField(default=0)
+    for_anonymous_user = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.owner.username
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'

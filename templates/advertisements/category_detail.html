@@ -15,9 +15,9 @@
     <div class="row mt-5">
         {% for advertise in advertises %}
             <div class="col-lg-4 col-md-6 mb-4"><div class="card h-100">
-                <a href="#"><img class="card-img-top" src="{{ advertise.image.url }}" alt=""></a>
+                <a href="{% url 'advertise_detail' category=category.slug pk=advertise.id %}"><img class="card-img-top" src="{{ advertise.image.url }}" alt=""></a>
                 <div class="card-body"><h4 class="card-title">
-                    <a href="#">{{ advertise.title }}</a>
+                    <a href="{% url 'advertise_detail' category=category.slug pk=advertise.id %}">{{ advertise.title }}</a>
                 </h4>
                     <h5>{{ advertise.price }} руб.</h5>
                     <p style="color: #797770; margin-top: 20px;">{{ advertise.city.title }}. {{ advertise.district.title }}</p>
