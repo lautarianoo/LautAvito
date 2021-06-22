@@ -78,9 +78,6 @@ class Cart(models.Model):
     quality = models.PositiveIntegerField(default=0)
     for_anonymous_user = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.owner.username
-
     class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'

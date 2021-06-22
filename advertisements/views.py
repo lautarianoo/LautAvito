@@ -1,4 +1,7 @@
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import DetailView
 
 from .models import *
@@ -35,4 +38,14 @@ class CartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.all()
-        return render(request, 'advertisements/cart.html', {'category': category, 'cart': self.cart})
+        return render(request, 'advertisements/cart.html', {'categories': category, 'cart': self.cart})
+
+class AddtoCartView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        advertise = Advertise.objects.get(id=kwargs.get('pk'))
+        if advertise:
+            self.cart.advertisements.add(advertise)
+            self.cart.quality += 1
+        messages.add_message(request, messages.INFO, 'Добавлено в избранные')
+        return HttpResponseRedirect(reverse('cart'))

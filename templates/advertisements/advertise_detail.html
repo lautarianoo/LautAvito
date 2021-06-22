@@ -10,7 +10,7 @@
     <div class="col-md-8">
         <h3>{{ advertise.price }} ₽</h3>
         <hr>
-        <a href="#"><button class="btn btn-success mb-3">Добавить в понравившиеся</button></a>
+        <a href="{% url 'add-to-card' pk=advertise.id %}"><button class="btn btn-success mb-3">Добавить в понравившиеся</button></a>
         <p>Продавец - {{ advertise.seller.username }}</p>
     </div>
     <hr  style=" margin-top: 25px">
