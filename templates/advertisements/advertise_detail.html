@@ -16,7 +16,7 @@
     <hr  style=" margin-top: 25px">
     <p><span style="color: #73716a; margin-top: 40px">Состояние: </span>{{ advertise.status }}</p>
     <hr>
-    <p>г.{{ advertise.city }}, {{ advertise.street }}</p>
+    <p>г.{{ advertise.city }}, {% if advertise.street %}{{ advertise.street }}{% endif %}</p>
     <p>{{ advertise.district }}</p>
     <hr>
         <p>{{ advertise.description }}</p>

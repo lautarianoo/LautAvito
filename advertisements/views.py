@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -15,7 +16,8 @@ class AdvertisementsCategoryList(CartMixin, View):
     def get(self, request, *args, **kwargs):
         advertises_list = [advertise for advertise in Advertise.objects.all() if advertise.moderated]
         category = Category.objects.all()
-        return render(request, 'base.html', {'advertises': advertises_list, 'categories': category, 'cart': self.cart})
+        city = City.objects.all()
+        return render(request, 'base.html', {'advertises': advertises_list, 'categories': category, 'cart': self.cart, 'cities': city})
 
 
 class CategoryDetail(CartMixin, View):
@@ -49,3 +51,19 @@ class AddtoCartView(CartMixin, View):
             self.cart.quality += 1
         messages.add_message(request, messages.INFO, 'Добавлено в избранные')
         return HttpResponseRedirect(reverse('cart'))
+
+class DeleteFromCartView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        advertise = Advertise.objects.get(id=kwargs.get('pk'))
+        self.cart.advertisements.remove(advertise)
+        messages.add_message(request, messages.INFO, 'Товар успешно удален')
+        return HttpResponseRedirect(reverse('cart'))
+
+class TitleSearching(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        advertises = Advertise.objects.filter(
+            title__icontains=request.GET.get('title'))
+        categories = Category.objects.all()
+        return render(request, 'base.html', {'advertises': advertises, 'categories': categories, 'cart': self.cart})

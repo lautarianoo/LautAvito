@@ -45,6 +45,7 @@
                 </div>
             </div>
         </nav>
+
         <!-- Page Content-->
         <div class="container">
             <div class="row">
@@ -66,6 +67,10 @@
                 {% endfor %}
                 </div>
              <hr>
+               <form class="d-flex" method="get" action="{% url 'search_adv' %}">
+        <input class="form-control me-2" name="title" type="search" placeholder="Поиск" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Поиск</button>
+      </form>
              <div class="row mt-5">
               {% for advertise in advertises %}
               <div class="col-lg-4 col-md-6 mb-4">

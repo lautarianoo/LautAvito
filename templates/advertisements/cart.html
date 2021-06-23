@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3 class="text-center mt-5 mb-5">Пусто</h3>
+<h3 class="text-center mt-5 mb-5">{% if cart.advertisements.count %}{{ cart.advertisements.count }} объявления {% else %}Пусто{% endif %}</h3>
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -11,16 +11,20 @@
     {% endfor %}
 {% endif %}
 
+<table class="table">
+
+  <tbody>
 {% for advertise in cart.advertisements.all %}
     <tr>
-      <th scope="row">{{ advertise.title }}</th>
-      <td class="w-25"><img src="{{ advertise.image.url }}" class="img-fluid"></td>
+      <th scope="row"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}">{{ advertise.title }}</a></th>
+        <td class="w-25"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}"><img src="{{ advertise.image.url }}" class="img-fluid"></a></td>
       <td>{{ advertise.price }} руб.</td>
       <td>{{ advertise.date_add }}</td>
         <td>{{ advertise.city }} {{ advertise.district }} {{ advertise.street }}</>
         <td>{{ advertise.category }}</td>
-        <td><a href="#"><button class="btn btn-danger">Удалить из понравившихся</button></a></td>
+        <td><a href="{% url 'delete-from-card' pk=advertise.id %}"><button class="btn btn-danger">Удалить из понравившихся</button></a></td>
     </tr>
   {% endfor %}
-
+  </tbody>
+</table>
 {% endblock content %}
