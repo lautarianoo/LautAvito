@@ -40,6 +40,17 @@
                     <span class="badge badge-danger">
                                     <a style="text-decoration: none; font-size: 14px;" href="#">{{ request.user.username }}</a>{% endif %}
                                 </span>
+
+                        </li>
+                        <li class="nav-item">
+                        <form method="get" action="">
+                            <select class="form-select" aria-label="Default select example" name="city">
+                              <option selected>Город</option>
+                                {% for city in cities %}
+                              <option value="1">{{ city.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
                         </li>
                     </ul>
                 </div>
