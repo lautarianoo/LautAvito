@@ -14,10 +14,12 @@ class AdvertisementsCategoryList(CartMixin, View):
     #Список объявлений
 
     def get(self, request, *args, **kwargs):
-        advertises_list = [advertise for advertise in Advertise.objects.all() if advertise.moderated]
         category = Category.objects.all()
-        city = City.objects.all()
-        return render(request, 'base.html', {'advertises': advertises_list, 'categories': category, 'cart': self.cart, 'cities': city})
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        advertises = Advertise.objects.filter(moderated=True, city=city_user)
+        return render(request, 'base.html', {'advertises': advertises, 'categories': category, 'cart': self.cart,
+                                             'cities': cities, 'city_user': city_user})
 
 
 class CategoryDetail(CartMixin, View):
@@ -67,3 +69,12 @@ class TitleSearching(CartMixin, View):
             title__icontains=request.GET.get('title'))
         categories = Category.objects.all()
         return render(request, 'base.html', {'advertises': advertises, 'categories': categories, 'cart': self.cart})
+
+class ChangeCity(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        city = City.objects.get(id=kwargs.get('pk'))
+        user.city = city
+        user.save()
+        return HttpResponseRedirect(reverse('advertise_list'))

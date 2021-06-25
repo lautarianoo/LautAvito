@@ -43,7 +43,7 @@ class Advertise(models.Model):
     image = models.ImageField(verbose_name='Картинка объявления')
     price  = models.PositiveIntegerField(verbose_name='Цена', default=0,
                                          blank=True, null=True)
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises', verbose_name='Продавец')
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises_user', verbose_name='Продавец')
     status = models.CharField(verbose_name='Статус товара', choices=STATUS_PRODUCT, max_length=100)
     date_add = models.DateTimeField(verbose_name='Дата создания товара', auto_now_add=True)
     moderated = models.BooleanField(verbose_name='Просмотрено модератором', default=False)

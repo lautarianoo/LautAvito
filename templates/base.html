@@ -43,14 +43,19 @@
 
                         </li>
                         <li class="nav-item">
-                        <form method="get" action="">
-                            <select class="form-select" aria-label="Default select example" name="city">
-                              <option selected>Город</option>
-                                {% for city in cities %}
-                              <option value="1">{{ city.title }}</option>
-                                {% endfor %}
-                            </select>
-                        </form>
+                        <div class="dropdown">
+                          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ city_user.title }}
+                          </a>
+
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          {% for city in cities %}
+                              {% if city != city_user %}
+                            <li><a class="dropdown-item" href="{% url 'change_city' pk=city.id %}">{{ city.title }}</a></li>
+                              {% endif %}
+                          {% endfor %}
+                          </ul>
+                        </div>
                         </li>
                     </ul>
                 </div>
