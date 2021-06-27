@@ -28,21 +28,27 @@ class CategoryDetail(CartMixin, View):
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(slug=kwargs.get('slug'))
         advertises = Advertise.objects.filter(category=category)
-        return render(request, 'advertisements/category_detail.html', {'category': category, 'advertises': advertises, 'cart': self.cart})
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'advertisements/category_detail.html', {'category': category, 'advertises': advertises, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
 
 class AdvertiseDetail(CartMixin, View):
     #Детализация объявлений
 
     def get(self, request, *args, **kwargs):
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
-        return render(request, 'advertisements/advertise_detail.html', {'advertise': advertise, 'cart': self.cart})
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'advertisements/advertise_detail.html', {'advertise': advertise, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
 
 class CartView(CartMixin, View):
     #Корзина
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.all()
-        return render(request, 'advertisements/cart.html', {'categories': category, 'cart': self.cart})
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'advertisements/cart.html', {'categories': category, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
 
 class AddtoCartView(CartMixin, View):
 
@@ -68,7 +74,9 @@ class TitleSearching(CartMixin, View):
         advertises = Advertise.objects.filter(
             title__icontains=request.GET.get('title'))
         categories = Category.objects.all()
-        return render(request, 'base.html', {'advertises': advertises, 'categories': categories, 'cart': self.cart})
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'base.html', {'advertises': advertises, 'categories': categories, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
 
 class ChangeCity(CartMixin, View):
 
