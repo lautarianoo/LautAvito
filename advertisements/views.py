@@ -8,6 +8,7 @@ from django.views.generic import DetailView
 from .models import *
 from django.views import View
 from .mixins import CartMixin
+from .forms import AdvertiseForm
 
 
 class AdvertisementsCategoryList(CartMixin, View):
@@ -86,3 +87,24 @@ class ChangeCity(CartMixin, View):
         user.city = city
         user.save()
         return HttpResponseRedirect(reverse('advertise_list'))
+
+class AdvertiseAddView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        form = AdvertiseForm()
+        categories = Category.objects.all()
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'advertisements/advertise_form.html',
+                      {'form': form, 'categories': categories, 'cart': self.cart, 'cities': cities,
+                       'city_user': city_user})
+
+    def post(self, request, *args, **kwargs):
+        form = AdvertiseForm(request.POST)
+        if form.is_valid():
+            new_ad = form.save(commit=False)
+            new_ad.seller = request.user
+            new_ad.save()
+            return HttpResponseRedirect(reverse('advertise_list'))
+        return render(request, 'advertisements/advertise_form.html',
+                      {'form': form, 'cart': self.cart})

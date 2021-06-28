@@ -57,6 +57,11 @@
                           </ul>
                         </div>
                         </li>
+                        <li class="nav-item">
+                            {% if request.user.is_authenticated %}
+                            <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="{% url 'add_ad' %}">Cоздать объявление</a>
+                            {% endif %}
+                        </li>
                     </ul>
                 </div>
             </div>

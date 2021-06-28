@@ -8,6 +8,7 @@ urlpatterns = [
     path('delete-from-card/<int:pk>/', views.DeleteFromCartView.as_view(), name='delete-from-card'),
     path('search-advertise/', views.TitleSearching.as_view(), name='search_adv'),
     path('change-city/<int:pk>/', views.ChangeCity.as_view(), name='change_city'),
+    path('addadvert/', views.AdvertiseAddView.as_view(), name='add_ad'),
     path('<slug:slug>/', views.CategoryDetail.as_view(), name='category_detail'),
     path('<slug:category>/<int:pk>/', views.AdvertiseDetail.as_view(), name='advertise_detail'),
 ]

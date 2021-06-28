@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'advertisements',
     'cities',
     'profiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
