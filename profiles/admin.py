@@ -15,3 +15,4 @@ from .models import  *
 #        (('Doc info'), {'fields': ('phone', 'avatar', 'advertises', 'email')})),
 
 admin.site.register(UserAvito)
+admin.site.register(Feedback)

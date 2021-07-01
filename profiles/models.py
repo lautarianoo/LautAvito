@@ -6,11 +6,35 @@ from PIL import Image
 from django.contrib.auth.models import AbstractUser
 from cities.models import City
 
+class Feedback(models.Model):
+
+    STATUS_FEEDBACK = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    )
+
+    sender = models.ForeignKey('UserAvito', verbose_name='Отправитель', on_delete=models.SET_NULL, null=True)
+    text = models.TextField(max_length=1500)
+    advertise = models.ForeignKey('advertisements.Advertise', verbose_name='Объявление', related_name='feedbacks', on_delete=models.CASCADE)
+    getter = models.ForeignKey('UserAvito', verbose_name='Получатель', on_delete=models.SET_NULL, null=True, related_name='feedbacks_getter')
+    mark = models.CharField(choices=STATUS_FEEDBACK, verbose_name='Оценка', max_length=400)
+
+    def __str__(self):
+        return f"{self.sender.username} | {self.advertise.title}"
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
 class UserAvito(AbstractUser):
 
     first_name = models.CharField(verbose_name='Имя', max_length=50)
     last_name = models.CharField(verbose_name='Фамилия', max_length=100)
     phone = models.CharField(max_length=30, verbose_name='Номер телефона')
+    feedbacks = models.ManyToManyField(Feedback, verbose_name='Отзывы', related_name='user')
     advertises = models.ManyToManyField('advertisements.Advertise', verbose_name='Объявления', related_name='user')
     email = models.EmailField(verbose_name='Email')
     avatar = models.ImageField(verbose_name='Аватарка', blank=True, null=True)
@@ -39,3 +63,4 @@ class UserAvito(AbstractUser):
     class Meta:
         verbose_name = 'Профиль пользователя'
         verbose_name_plural = 'Профили пользователя'
+

@@ -69,6 +69,14 @@ class DeleteFromCartView(CartMixin, View):
         messages.add_message(request, messages.INFO, 'Товар успешно удален')
         return HttpResponseRedirect(reverse('cart'))
 
+class DeleteFromBase(View):
+
+    def get(self, request, *args, **kwargs):
+        advertise = Advertise.objects.get(id=kwargs.get('pk'))
+        advertise.delete()
+        messages.add_message(request, messages.INFO, 'Товар снят с публикации')
+        return HttpResponseRedirect(reverse('my_ad'))
+
 class TitleSearching(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -100,7 +108,7 @@ class AdvertiseAddView(CartMixin, View):
                        'city_user': city_user})
 
     def post(self, request, *args, **kwargs):
-        form = AdvertiseForm(request.POST)
+        form = AdvertiseForm(request.POST or None)
         if form.is_valid():
             new_ad = form.save(commit=False)
             new_ad.seller = request.user
@@ -108,3 +116,16 @@ class AdvertiseAddView(CartMixin, View):
             return HttpResponseRedirect(reverse('advertise_list'))
         return render(request, 'advertisements/advertise_form.html',
                       {'form': form, 'cart': self.cart})
+
+
+class MyAdvertiseView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        advertises = Advertise.objects.filter(seller=request.user)
+        cities = City.objects.all()
+        city_user = City.objects.get(user_related=request.user)
+        return render(request, 'advertisements/my_advertise.html',
+                      {'advertises': advertises, 'cart': self.cart, 'cities': cities,
+                       'city_user': city_user})
+
+

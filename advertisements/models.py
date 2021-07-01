@@ -40,7 +40,7 @@ class Advertise(models.Model):
     street = models.ForeignKey(Street, verbose_name='Улица', on_delete=models.SET_NULL,
                                blank=True, null=True)
     description = models.TextField(verbose_name='Описание товара', max_length=13000)
-    image = models.ImageField(verbose_name='Картинка объявления')
+    image = models.ImageField(verbose_name='Картинка объявления', blank=True)
     price  = models.PositiveIntegerField(verbose_name='Цена', default=0,
                                          blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises_user', verbose_name='Продавец')
