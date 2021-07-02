@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 import sys
 from io import BytesIO
@@ -34,8 +35,8 @@ class UserAvito(AbstractUser):
     first_name = models.CharField(verbose_name='Имя', max_length=50)
     last_name = models.CharField(verbose_name='Фамилия', max_length=100)
     phone = models.CharField(max_length=30, verbose_name='Номер телефона')
-    feedbacks = models.ManyToManyField(Feedback, verbose_name='Отзывы', related_name='user')
-    advertises = models.ManyToManyField('advertisements.Advertise', verbose_name='Объявления', related_name='user')
+    feedbacks = models.ManyToManyField(Feedback, verbose_name='Отзывы', related_name='user', blank=True)
+    advertises = models.ManyToManyField('advertisements.Advertise', verbose_name='Объявления', related_name='user', blank=True)
     email = models.EmailField(verbose_name='Email')
     avatar = models.ImageField(verbose_name='Аватарка', blank=True, null=True)
     company = models.BooleanField(verbose_name='Компания или нет', default=False)

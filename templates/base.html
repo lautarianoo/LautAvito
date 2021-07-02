@@ -26,7 +26,7 @@
                     <ul class="navbar-nav">
                         {% if not request.user.is_authenticated %}
                             <li>
-                                <a class="navbar-link text-light" style="text-decoration: none" href="#">Авторизация</a>
+                                <a class="navbar-link text-light" style="text-decoration: none" href="{% url 'login' %}">Авторизация</a>
                             </li>
                             <li>
                                 <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="#">Регистрация</a>
@@ -39,8 +39,9 @@
                         <li class="nav-item">
                             {% if request.user.is_authenticated %}
                     <span class="badge badge-danger">
-                                    <a style="text-decoration: none; font-size: 14px;" href="#">{{ request.user.username }}</a>{% endif %}
+                                    <a style="text-decoration: none; font-size: 14px;" href="#">{{ request.user.first_name }} {{ request.user.last_name }}</a>
                                 </span>
+                            {% endif %}
 
                         </li>
                         <li class="nav-item">
