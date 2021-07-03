@@ -17,3 +17,25 @@ class LoginForm(forms.Form):
             if not user.check_password(password):
                 raise forms.ValidationError('Неверный пароль')
         return self.cleaned_data
+
+class RegisterForm(forms.ModelForm):
+
+    email = forms.CharField(label='Почтовый ящик', widget=forms.EmailInput())
+    phone = forms.CharField(label='Номер телефона')
+    username = forms.CharField(label='Прозвище')
+    first_name = forms.CharField(label='Имя')
+    last_name = forms.CharField(label='Фамилия')
+    city = forms.CharField(label='Город')
+    avatar = forms.ImageField(label='Аватарка', widget=forms.FileInput(), required=False)
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput())
+    password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput())
+
+    class Meta:
+        model = UserAvito
+        fields = ('email', 'phone', 'username', 'first_name', 'last_name', 'city', 'avatar')
+
+    def clean_password2(self):
+        data = self.cleaned_data
+        if data['password1'] != data['password2']:
+            raise forms.ValidationError('Пароли не совпадают')
+        return data['password2']

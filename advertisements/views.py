@@ -28,9 +28,9 @@ class CategoryDetail(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(slug=kwargs.get('slug'))
-        advertises = Advertise.objects.filter(category=category)
-        cities = City.objects.all()
         city_user = City.objects.get(user_related=request.user)
+        advertises = Advertise.objects.filter(category=category, moderated=True, city=city_user)
+        cities = City.objects.all()
         return render(request, 'advertisements/category_detail.html', {'category': category, 'advertises': advertises, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
 
 class AdvertiseDetail(CartMixin, View):
