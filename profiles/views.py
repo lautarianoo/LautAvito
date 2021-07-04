@@ -8,6 +8,7 @@ from .forms import LoginForm, RegisterForm
 from django.views import View
 from advertisements.mixins import CartMixin
 from .models import UserAvito
+from advertisements.models import Advertise
 
 class LoginView(CartMixin, View):
 
@@ -42,8 +43,14 @@ class RegisterView(CartMixin, View):
         form = RegisterForm(request.POST or None)
         if form.is_valid():
             new_user = form.save(commit=False)
-            new_user.city = City.objects.get(title=form.cleaned_data['city'])
             new_user.set_password(form.cleaned_data['password1'])
             new_user.save()
             return HttpResponseRedirect(reverse('login'))
         return render(request, 'profiles/register.html', {'form': form, 'cart': self.cart})
+
+class ProfileView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        advertises = Advertise.objects.filter(seller=request.user)
+        return render(request, 'profiles/profile.html', {'advertises': advertises})
+

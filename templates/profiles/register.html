@@ -6,63 +6,8 @@
  <form class="form-horizontal" method="post">
 	 	{% csrf_token %}
 		 <span class="heading">РЕГИСТРАЦИЯ</span>
-            <div class="form-group">
-		 <div class="form-group">
-		 <input type="email" class="form-control" id="inputEmail" placeholder="E-mail" name="email">
-		 <i class="fa fa-user"></i>
-		 </div>
-                <div>
-		 <input type="text" class="form-control" id="inputPhone" placeholder="Телефон" name="phone">
-		 <i class="fa fa-user"></i>
-		 </div>
-		 <div class="form-group">
-		 <input type="text" class="form-control" id="inputText" placeholder="Прозвище" name="username">
-		 <i class="fa fa-user"></i>
-		 </div>
-         <div class="form-group">
-		 <input type="text" class="form-control" id="inputText" placeholder="Имя" name="first_name">
-		 <i class="fa fa-user"></i>
-         </div>
-         <div class="form-group">
-		 <input type="text" class="form-control" id="inputText" placeholder="Фамилия" name="last_name">
-		 <i class="fa fa-user"></i>
-         </div>
-         <div class="form-group">
-         <select class="form-control" id="inputCity" name="city">
-             <option selected>{{ city.title }}</option>
-             {% for city_t in cities %}
-                 {% if city_t.title != city.title %}
-                 <option>{{ city_t.title }}</option>
-                 {% endif %}
-             {% endfor %}
-         </select>
-		 <i class="fa fa-user"></i>
-         </div>
-          <div class="form-group">
-		 <input type="file" class="form-control" id="inputText" placeholder="Аватарка" name="avatar">
-		 <i class="fa fa-user"></i>
-          </div>
-		 <div class="form-group help">
-		 <input type="password" class="form-control" id="inputPassword1" placeholder="Пароль" name="password1">
-		 <i class="fa fa-lock"></i>
-		 <a href="#" class="fa fa-question-circle"></a>
-		 </div>
-        <div class="form-group help">
-		 <input type="password" class="form-control" id="inputPassword2" placeholder="Повторный пароль" name="password2">
-		 <i class="fa fa-lock"></i>
-		 <a href="#" class="fa fa-question-circle"></a>
-		 </div>
-		 <div class="form-group">
-		 <div class="main-checkbox">
-		 <input type="checkbox" value="none" id="checkbox1" name="check"/>
-		 <label for="checkbox1"></label>
-		 </div>
-		 <span class="text">Запомнить</span>
-             <span>Есть аккаунт? <a href="#">Авторизоваться</a></span>
-		 <button type="submit" class="btn btn-default">СОЗДАТЬ АККАУНТ</button>
-		 </div>
-          </div>
-
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary btn">Зарегестрироваться</button>
  </form>
  </div>
 {% endblock content %}

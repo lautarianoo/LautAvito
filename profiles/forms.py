@@ -4,7 +4,7 @@ from .models import UserAvito
 
 class LoginForm(forms.Form):
 
-    email = forms.CharField(label='Почтовый ящик', widget=forms.EmailInput())
+    email = forms.CharField(label='Почта', widget=forms.EmailInput())
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput())
 
     def clean(self, *args, **kwargs):
@@ -20,13 +20,13 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.ModelForm):
 
-    email = forms.CharField(label='Почтовый ящик', widget=forms.EmailInput())
-    phone = forms.CharField(label='Номер телефона')
-    username = forms.CharField(label='Прозвище')
-    first_name = forms.CharField(label='Имя')
-    last_name = forms.CharField(label='Фамилия')
-    city = forms.CharField(label='Город')
-    avatar = forms.ImageField(label='Аватарка', widget=forms.FileInput(), required=False)
+    #email = forms.CharField(label='Почтовый ящик', widget=forms.EmailInput())
+    #phone = forms.CharField(label='Номер телефона')
+    #username = forms.CharField(label='Прозвище')
+    #first_name = forms.CharField(label='Имя')
+    #last_name = forms.CharField(label='Фамилия')
+    #city = forms.CharField(label='Город')
+    #avatar = forms.ImageField(label='Аватарка', widget=forms.FileInput(), required=False)
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput())
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput())
 
