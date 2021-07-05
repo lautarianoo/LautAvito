@@ -10,42 +10,51 @@ from django.views import View
 from .mixins import CartMixin
 from .forms import AdvertiseForm
 
-
 class AdvertisementsCategoryList(CartMixin, View):
     #Список объявлений
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.all()
-        cities = City.objects.all()
-        city_user = City.objects.get(user_related=request.user)
-        advertises = Advertise.objects.filter(moderated=True, city=city_user)
-        return render(request, 'base.html', {'advertises': advertises, 'categories': category, 'cart': self.cart,
-                                             'cities': cities, 'city_user': city_user})
-
+        advertises = Advertise.objects.all()
+        if request.user.is_authenticated:
+            city_user = City.objects.get(user_related=request.user)
+            advertises = Advertise.objects.filter(moderated=True, city=city_user)
+            cities = City.objects.all()
+            return render(request, 'base.html', {'advertises': advertises, 'categories': category, 'cart': self.cart,
+                                                 'cities': cities, 'city_user': city_user})
+        return render(request, 'base.html', {'advertises': advertises, 'categories': category})
 
 class CategoryDetail(CartMixin, View):
     #Детализация категории
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(slug=kwargs.get('slug'))
-        city_user = City.objects.get(user_related=request.user)
-        advertises = Advertise.objects.filter(category=category, moderated=True, city=city_user)
-        cities = City.objects.all()
-        return render(request, 'advertisements/category_detail.html', {'category': category, 'advertises': advertises, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
+        if request.user.is_authenticated:
+            city_user = City.objects.get(user_related=request.user)
+            advertises = Advertise.objects.filter(category=category, moderated=True, city=city_user)
+            cities = City.objects.all()
+            return render(request, 'advertisements/category_detail.html',
+                          {'category': category, 'advertises': advertises, 'cart': self.cart, 'cities': cities,
+                           'city_user': city_user})
+        advertises = Advertise.objects.filter(category=category)
+        return render(request, 'advertisements/category_detail.html', {'category': category, 'advertises': advertises})
 
 class AdvertiseDetail(CartMixin, View):
     #Детализация объявлений
 
     def get(self, request, *args, **kwargs):
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
-        cities = City.objects.all()
-        city_user = City.objects.get(user_related=request.user)
-        return render(request, 'advertisements/advertise_detail.html', {'advertise': advertise, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
+        if request.user.is_authenticated:
+            cities = City.objects.all()
+            city_user = City.objects.get(user_related=request.user)
+            return render(request, 'advertisements/advertise_detail.html', {'advertise': advertise, 'cart': self.cart, 'cities': cities, 'city_user': city_user})
+        return render(request, 'advertisements/advertise_detail.html', {'advertise': advertise})
 
 class CartView(CartMixin, View):
     #Корзина
-
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         category = Category.objects.all()
         cities = City.objects.all()
         city_user = City.objects.get(user_related=request.user)
@@ -54,6 +63,8 @@ class CartView(CartMixin, View):
 class AddtoCartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
         if advertise:
             self.cart.advertisements.add(advertise)
@@ -64,6 +75,8 @@ class AddtoCartView(CartMixin, View):
 class DeleteFromCartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
         self.cart.advertisements.remove(advertise)
         messages.add_message(request, messages.INFO, 'Товар успешно удален')
@@ -72,6 +85,8 @@ class DeleteFromCartView(CartMixin, View):
 class DeleteFromBase(View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
         advertise.delete()
         messages.add_message(request, messages.INFO, 'Товар снят с публикации')
@@ -90,6 +105,8 @@ class TitleSearching(CartMixin, View):
 class ChangeCity(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         user = request.user
         city = City.objects.get(id=kwargs.get('pk'))
         user.city = city
@@ -99,6 +116,8 @@ class ChangeCity(CartMixin, View):
 class AdvertiseAddView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         form = AdvertiseForm()
         categories = Category.objects.all()
         cities = City.objects.all()
@@ -108,6 +127,8 @@ class AdvertiseAddView(CartMixin, View):
                        'city_user': city_user})
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         form = AdvertiseForm(request.POST or None)
         if form.is_valid():
             new_ad = form.save(commit=False)
@@ -117,10 +138,11 @@ class AdvertiseAddView(CartMixin, View):
         return render(request, 'advertisements/advertise_form.html',
                       {'form': form, 'cart': self.cart})
 
-
 class MyAdvertiseView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
         advertises = Advertise.objects.filter(seller=request.user)
         cities = City.objects.all()
         city_user = City.objects.get(user_related=request.user)

@@ -52,5 +52,5 @@ class ProfileView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         advertises = Advertise.objects.filter(seller=request.user)
-        return render(request, 'profiles/profile.html', {'advertises': advertises})
+        return render(request, 'profiles/profile.html', {'advertises': advertises, 'user': request.user})
 
