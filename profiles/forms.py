@@ -1,6 +1,6 @@
 from django import forms
 from .models import UserAvito
-from .models import UserAvito
+from .models import UserAvito, Feedback
 
 class LoginForm(forms.Form):
 
@@ -39,3 +39,9 @@ class RegisterForm(forms.ModelForm):
         if data['password1'] != data['password2']:
             raise forms.ValidationError('Пароли не совпадают')
         return data['password2']
+
+class FeedbackForm(forms.ModelForm):
+
+    class Meta:
+        model = Feedback
+        fields = ('advertise', 'text', 'mark')

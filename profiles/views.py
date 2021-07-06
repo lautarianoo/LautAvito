@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from cities.models import City
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, FeedbackForm
 from django.views import View
 from advertisements.mixins import CartMixin
 from .models import UserAvito
@@ -54,3 +54,26 @@ class ProfileView(CartMixin, View):
         advertises = Advertise.objects.filter(seller=request.user)
         return render(request, 'profiles/profile.html', {'advertises': advertises, 'user': request.user})
 
+class UserView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        user = UserAvito.objects.get(id=kwargs.get('pk'))
+        advertises = Advertise.objects.filter(seller=user)
+        return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart})
+
+class FeedbackCreateView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = FeedbackForm()
+        form.advertise = Advertise.objects.filter(seller_id=kwargs.get('pk'))
+        return render(request, 'profiles/feedback_create.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = FeedbackForm(request.POST or None)
+        if form.is_valid():
+            new_feedback = form.save(commit=False)
+            new_feedback.sender = request.user
+            new_feedback.getter = UserAvito.objects.get(id=kwargs.get('pk'))
+            new_feedback.save()
+            return redirect('profile_user', pk=kwargs.get('pk'))
+        return render(request, 'profiles/feedback_create.html', {'form': form})

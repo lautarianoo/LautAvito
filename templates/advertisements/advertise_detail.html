@@ -11,7 +11,7 @@
         <h3>{{ advertise.price }} ₽</h3>
         <hr>
         <a href="{% url 'add-to-card' pk=advertise.id %}"><button class="btn btn-success mb-3">Добавить в понравившиеся</button></a>
-        <p>Продавец - {{ advertise.seller.username }}</p>
+        <p>Продавец - <a href="{% url 'profile_user' pk=advertise.seller.id %}">{{ advertise.seller.first_name }} {{ advertise.seller.last_name }}</a></p>
     </div>
     <hr  style=" margin-top: 25px">
     <p><span style="color: #73716a; margin-top: 40px">Состояние: </span>{{ advertise.status }}</p>

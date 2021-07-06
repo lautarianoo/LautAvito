@@ -5,16 +5,18 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
+
 from cities.models import City
 
 class Feedback(models.Model):
 
     STATUS_FEEDBACK = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+        ('Очень плохо', 'Очень плохо'),
+        ('Плохо', 'Плохо'),
+        ('Терпимо', 'Терпимо'),
+        ('Нормально', 'Нормально'),
+        ('Отлично', 'Отлично'),
     )
 
     sender = models.ForeignKey('UserAvito', verbose_name='Отправитель', on_delete=models.SET_NULL, null=True)
@@ -82,13 +84,14 @@ class UserAvito(AbstractBaseUser):
     def __str__(self):
         return f"{self.username} | {self.last_name}"
 
+
     def save(self, *args, **kwargs):
 #
         if self.avatar:
             image = self.avatar
             img = Image.open(image)
             new_img = img.convert('RGB')
-            resized_new_img = new_img.resize((400, 300), Image.ANTIALIAS)
+            resized_new_img = new_img.resize((150, 150), Image.ANTIALIAS)
             filestream = BytesIO()
             resized_new_img.save(filestream, 'JPEG', quality=90)
             filestream.seek(0)
