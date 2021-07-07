@@ -44,6 +44,8 @@ class AdvertiseDetail(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
+        advertise.viewed += 1
+        advertise.save()
         if request.user.is_authenticated:
             cities = City.objects.all()
             city_user = City.objects.get(user_related=request.user)

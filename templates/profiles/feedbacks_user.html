@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row mb-3"><h2>Отзывы о {{ user.first_name }} {{ user.last_name }}</h2>
+        <h5>Рейтинг: {{ average }}</h5>
+    </div>
+{% for feedback in feedbacks %}
+<div class="card mt-3">
+  <div class="card-header">
+    {{ feedback.sender.first_name }} {{ feedback.sender.last_name }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ feedback.advertise.title }}. Оценка: {{ feedback.mark }}</h5>
+    <p class="card-text">{{ feedback.text }}</p>
+    <p style="color: #75736c">{{ feedback.date_add }}</p>
+  </div>
+</div>
+    {% endfor %}
+{% endblock content %}

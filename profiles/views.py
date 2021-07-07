@@ -7,8 +7,9 @@ from cities.models import City
 from .forms import LoginForm, RegisterForm, FeedbackForm
 from django.views import View
 from advertisements.mixins import CartMixin
-from .models import UserAvito
+from .models import UserAvito, Feedback
 from advertisements.models import Advertise
+from utils.rating import rating
 
 class LoginView(CartMixin, View):
 
@@ -61,7 +62,7 @@ class UserView(CartMixin, View):
         advertises = Advertise.objects.filter(seller=user)
         return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart})
 
-class FeedbackCreateView(View):
+class FeedbackCreateView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         form = FeedbackForm()
@@ -75,5 +76,15 @@ class FeedbackCreateView(View):
             new_feedback.sender = request.user
             new_feedback.getter = UserAvito.objects.get(id=kwargs.get('pk'))
             new_feedback.save()
+            if new_feedback:
+                request.user.feedbacks.add(new_feedback)
             return redirect('profile_user', pk=kwargs.get('pk'))
         return render(request, 'profiles/feedback_create.html', {'form': form})
+
+class FeedbackView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        feedbacks = Feedback.objects.filter(getter_id=kwargs.get('pk'))
+        average = rating(feedbacks)
+        return render(request, 'profiles/feedbacks_user.html', {'feedbacks': feedbacks, 'cart': self.cart,
+                                                                'user': UserAvito.objects.get(id=kwargs.get('pk')), 'average': average})
