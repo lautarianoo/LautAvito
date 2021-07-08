@@ -20,13 +20,6 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.ModelForm):
 
-    #email = forms.CharField(label='Почтовый ящик', widget=forms.EmailInput())
-    #phone = forms.CharField(label='Номер телефона')
-    #username = forms.CharField(label='Прозвище')
-    #first_name = forms.CharField(label='Имя')
-    #last_name = forms.CharField(label='Фамилия')
-    #city = forms.CharField(label='Город')
-    #avatar = forms.ImageField(label='Аватарка', widget=forms.FileInput(), required=False)
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput())
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput())
 
@@ -45,3 +38,16 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ('advertise', 'text', 'mark')
+
+class SettingsForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = False
+        self.fields['last_name'].required = False
+        self.fields['username'].required = False
+        self.fields['phone'].required = False
+
+    class Meta:
+        model = UserAvito
+        fields = ('first_name', 'last_name', 'username', 'phone')

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from cities.models import City
-from .forms import LoginForm, RegisterForm, FeedbackForm
+from .forms import LoginForm, RegisterForm, FeedbackForm, SettingsForm
 from django.views import View
 from advertisements.mixins import CartMixin
 from .models import UserAvito, Feedback
@@ -60,7 +60,8 @@ class UserView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         user = UserAvito.objects.get(id=kwargs.get('pk'))
         advertises = Advertise.objects.filter(seller=user)
-        return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart})
+        average = rating(Feedback.objects.filter(getter_id=kwargs.get('pk')))
+        return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart, 'average': average})
 
 class FeedbackCreateView(CartMixin, View):
 
@@ -88,3 +89,27 @@ class FeedbackView(CartMixin, View):
         average = rating(feedbacks)
         return render(request, 'profiles/feedbacks_user.html', {'feedbacks': feedbacks, 'cart': self.cart,
                                                                 'user': UserAvito.objects.get(id=kwargs.get('pk')), 'average': average})
+
+class SettingsView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        form = SettingsForm(initial={'first_name': user.first_name, 'last_name': user.last_name, 'username': user.username,
+                                     'email': user.email, 'phone': user.phone})
+        return render(request, 'profiles/settings.html', {'form': form, 'cart': self.cart})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        form = SettingsForm(request.POST or None)
+        if form.is_valid():
+            data = form.cleaned_data
+            user.first_name = data['first_name']
+            user.last_name = data['last_name']
+            user.username = data['username']
+            user.phone = data['phone']
+            user.save()
+            return HttpResponseRedirect(reverse('profile'))
+        else:
+            form = SettingsForm(initial={'first_name': user.first_name, 'last_name': user.last_name, 'username': user.username,
+                                     'email': user.email, 'phone': user.phone})
+            return render(request, 'profiles/settings.html', {'form': form, 'cart': self.cart})

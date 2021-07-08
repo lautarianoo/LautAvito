@@ -3,7 +3,9 @@
 {% block content %}
 <div class="row"><h2>{{ user.first_name }} {{ user.last_name }}</h2></div>
     <div class="row" style="margin-bottom: 10px"><a href="{% url 'feedback-add' pk=user.id %}">Оставить отзыв</a></div>
-    <div class="row" style="margin-bottom: 10px"><a href="{% url 'feedbacks_user' pk=user.id %}">{{ user.count_feedbacks }} отзывов(ыв)</a></div>
+    <div class="row" style="margin-bottom: 10px">
+        <h4>Рейтинг: {{ average }}</h4>
+        <a href="{% url 'feedbacks_user' pk=user.id %}">{{ user.count_feedbacks }} отзывов(ыв)</a></div>
     {% if user.avatar %}
          <img class="img-fluid" src="{{ user.avatar.url }}" alt="">
     {% endif %}
