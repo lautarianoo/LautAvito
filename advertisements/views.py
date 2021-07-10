@@ -120,7 +120,7 @@ class AdvertiseAddView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('login'))
-        form = AdvertiseForm()
+        form = AdvertiseForm(initial={'city': request.user.city})
         categories = Category.objects.all()
         cities = City.objects.all()
         city_user = City.objects.get(user_related=request.user)

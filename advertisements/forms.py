@@ -1,5 +1,7 @@
 from django import forms
 from .models import Advertise
+from cities.models import District
+from advertisements.mixins import DistrictMixin
 
 class AdvertiseForm(forms.ModelForm):
 
