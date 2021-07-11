@@ -40,7 +40,7 @@ class Advertise(models.Model):
     street = models.ForeignKey(Street, verbose_name='Улица', on_delete=models.SET_NULL,
                                blank=True, null=True)
     description = models.TextField(verbose_name='Описание товара', max_length=13000)
-    image = models.ImageField(verbose_name='Картинка объявления', blank=True)
+    images = models.ManyToManyField('PhotoAdvertise', verbose_name='Изображения товара', related_name='advertise')
     price  = models.PositiveIntegerField(verbose_name='Цена', default=0,
                                          blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises_user', verbose_name='Продавец')
@@ -51,6 +51,22 @@ class Advertise(models.Model):
 
     def __str__(self):
         return f"{self.title} | {self.category}"
+
+    def get_main_image(self):
+        lt =  [image for image in self.images.all()]
+        return lt[0]
+
+    class Meta:
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
+
+class PhotoAdvertise(models.Model):
+
+    title = models.CharField(max_length=150, verbose_name='Название изображения')
+    image = models.ImageField(verbose_name='Изображение')
+
+    def __str__(self):
+        return self.title
 
     def save(self, *args, **kwargs):
 
@@ -68,8 +84,8 @@ class Advertise(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Объявление'
-        verbose_name_plural = 'Объявления'
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
 
 class Cart(models.Model):
     #Модель понравившихся товаров(корзина)

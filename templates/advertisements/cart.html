@@ -20,8 +20,11 @@
         <td class="w-25"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}"><img src="{{ advertise.image.url }}" class="img-fluid"></a></td>
       <td>{{ advertise.price }} руб.</td>
       <td>{{ advertise.date_add }}</td>
-        <td>{{ advertise.city }} {{ advertise.district }} {{ advertise.street }}</>
-        <td>{{ advertise.category }}</td>
+        <td>{{ advertise.city.title }},  {{ advertise.district.title }}
+            {% if advertise.street %}
+            , {{ advertise.street.title }}
+            {% endif %}</td>
+        <td>{{ advertise.category.title }}</td>
         <td><a href="{% url 'delete-from-card' pk=advertise.id %}"><button class="btn btn-danger">Удалить из понравившихся</button></a></td>
     </tr>
   {% endfor %}
