@@ -40,7 +40,7 @@ class Advertise(models.Model):
     street = models.ForeignKey(Street, verbose_name='Улица', on_delete=models.SET_NULL,
                                blank=True, null=True)
     description = models.TextField(verbose_name='Описание товара', max_length=13000)
-    images = models.ManyToManyField('PhotoAdvertise', verbose_name='Изображения товара', related_name='advertise')
+    images = models.ForeignKey('PhotosAdvertise', verbose_name='Изображения товара', on_delete=models.CASCADE)
     price  = models.PositiveIntegerField(verbose_name='Цена', default=0,
                                          blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertises_user', verbose_name='Продавец')
@@ -53,35 +53,39 @@ class Advertise(models.Model):
         return f"{self.title} | {self.category}"
 
     def get_main_image(self):
-        lt =  [image for image in self.images.all()]
-        return lt[0]
+        return self.images.image_main
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
 
-class PhotoAdvertise(models.Model):
+class PhotosAdvertise(models.Model):
 
     title = models.CharField(max_length=150, verbose_name='Название изображения')
-    image = models.ImageField(verbose_name='Изображение')
+    image_main = models.ImageField(verbose_name='Изображение главное')
+    image_2 = models.ImageField(verbose_name='Изображение 2', blank=True, null=True)
+    image_3 = models.ImageField(verbose_name='Изображение 3', blank=True, null=True)
+    image_4 = models.ImageField(verbose_name='Изображение 4', blank=True, null=True)
+    image_5 = models.ImageField(verbose_name='Изображение 5', blank=True, null=True)
 
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
+        images = [self.image_main, self.image_2, self.image_3, self.image_4, self.image_5]
 
-        image = self.image
-        img = Image.open(image)
-        new_img = img.convert('RGB')
-        resized_new_img = new_img.resize((600, 600), Image.ANTIALIAS)
-        filestream = BytesIO()
-        resized_new_img.save(filestream, 'JPEG', quality=90)
-        filestream.seek(0)
-        name = '{}.{}'.format(*self.image.name.split('.'))
-        self.image = InMemoryUploadedFile(
-            filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream), None
-        )
-        super().save(*args, **kwargs)
+        for i in range(0, len(images)):
+            img = Image.open(images[i])
+            new_img = img.convert('RGB')
+            resized_new_img = new_img.resize((500, 500), Image.ANTIALIAS)
+            filestream = BytesIO()
+            resized_new_img.save(filestream, 'JPEG', quality=90)
+            filestream.seek(0)
+            name = '{}.{}'.format(*images[i].name.split('.'))
+            images[i] = InMemoryUploadedFile(
+                filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream), None
+            )
+            super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Изображение'

@@ -4,4 +4,4 @@ from .models import *
 admin.site.register(Category)
 admin.site.register(Advertise)
 admin.site.register(Cart)
-admin.site.register(PhotoAdvertise)
+admin.site.register(PhotosAdvertise)

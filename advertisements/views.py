@@ -135,6 +135,10 @@ class AdvertiseAddView(CartMixin, View):
         if form.is_valid():
             new_ad = form.save(commit=False)
             new_ad.seller = request.user
+            photos = PhotosAdvertise.objects.create(title=request.user.username, image_main=new_ad.image_main,
+                                           image_2=new_ad.image_2, image_3=new_ad.image_3,
+                                           image_4=new_ad.image_4, image_5=new_ad.image_5)
+            new_ad.images = photos
             new_ad.save()
             return HttpResponseRedirect(reverse('advertise_list'))
         return render(request, 'advertisements/advertise_form.html',

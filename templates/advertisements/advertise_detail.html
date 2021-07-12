@@ -5,7 +5,9 @@
     <h3>{{ advertise.title }}</h3>
     <div class="col-md-12"><p>{{ advertise.date_add }}</p></div>
     <div class="col-md-4">
-        <img src="{{ advertise.image.url }}" alt="" class="img-fluid">
+    <img src="{{ advertise.get_main_image.url }}" alt="" class="img-thumbnail">
+        <img src="{{ advertise.images.image_2 }}" alt="" width="75" height="75">
+
     </div>
     <div class="col-md-8">
         <h3>{{ advertise.price }} ₽</h3>
