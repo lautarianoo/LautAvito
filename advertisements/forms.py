@@ -6,10 +6,10 @@ from advertisements.mixins import DistrictMixin
 class AdvertiseForm(forms.ModelForm):
 
     image_main = forms.ImageField(label='Главное изображение')
-    image_2 = forms.ImageField(required=False)
-    image_3 = forms.ImageField(required=False)
-    image_4 = forms.ImageField(required=False)
-    image_5 = forms.ImageField(required=False)
+    image_2 = forms.ImageField(required=False, label='Изображение')
+    image_3 = forms.ImageField(required=False, label='Изображение')
+    image_4 = forms.ImageField(required=False, label='Изображение')
+    image_5 = forms.ImageField(required=False, label='Изображение')
 
 
     class Meta:

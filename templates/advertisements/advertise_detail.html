@@ -5,9 +5,19 @@
     <h3>{{ advertise.title }}</h3>
     <div class="col-md-12"><p>{{ advertise.date_add }}</p></div>
     <div class="col-md-4">
-    <img src="{{ advertise.get_main_image.url }}" alt="" class="img-thumbnail">
-        <img src="{{ advertise.images.image_2 }}" alt="" width="75" height="75">
-
+    <img src="{{ advertise.get_main_image.url }}" alt="" width="300" height="300" style="margin-bottom: 10px">
+        {% if advertise.images.image_2 %}
+        <img src="{{ advertise.images.image_2.url }}" alt="" width="90" height="90">
+        {% endif %}
+    {% if advertise.images.image_3 %}
+        <img src="{{ advertise.images.image_3.url }}" alt="" width="90" height="90">
+        {% endif %}
+    {% if advertise.images.image_4 %}
+        <img src="{{ advertise.images.image_4.url }}" alt="" width="90" height="90">
+        {% endif %}
+    {% if advertise.images.image_5 %}
+        <img src="{{ advertise.images.image_5.url }}" alt="" width="90" height="90">
+        {% endif %}
     </div>
     <div class="col-md-8">
         <h3>{{ advertise.price }} ₽</h3>

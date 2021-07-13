@@ -72,7 +72,8 @@ class PhotosAdvertise(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        images = [self.image_main, self.image_2, self.image_3, self.image_4, self.image_5]
+        images_not_valid = [self.image_main, self.image_2, self.image_3, self.image_4, self.image_5]
+        images = [image for image in images_not_valid if image]
 
         for i in range(0, len(images)):
             img = Image.open(images[i])
