@@ -11,7 +11,9 @@ def rating(feedbacks):
     total_marks = 0
     count = 0
 
-    for feedback in feedbacks:
-        total_marks += marks.get(feedback.mark)
-        count += 1
-    return total_marks / count
+    if feedbacks:
+        for feedback in feedbacks:
+            total_marks += marks.get(feedback.mark)
+            count += 1
+        return total_marks / count
+    return 0

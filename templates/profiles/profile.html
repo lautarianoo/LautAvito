@@ -15,7 +15,7 @@
               {% for advertise in advertises %}
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-                  <a href="{% url 'advertise_detail' category=advertise.category.slug pk=advertise.id %}"><img class="card-img-top" src="{{ advertise.image.url }}" alt=""></a>
+                  <a href="{% url 'advertise_detail' category=advertise.category.slug pk=advertise.id %}"><img class="card-img-top" src="{{ advertise.get_main_image.url }}" height="300" alt=""></a>
                   <div class="card-body">
                     <h4 class="card-title">
                       <a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}">{{ advertise.title }}</a>
