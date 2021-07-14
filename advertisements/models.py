@@ -86,7 +86,7 @@ class PhotosAdvertise(models.Model):
             images[i] = InMemoryUploadedFile(
                 filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream), None
             )
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Изображение'

@@ -131,13 +131,15 @@ class AdvertiseAddView(CartMixin, View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('login'))
-        form = AdvertiseForm(request.POST or None)
+        form = AdvertiseForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             new_ad = form.save(commit=False)
             new_ad.seller = request.user
-            photos = PhotosAdvertise.objects.create(title=request.user.username, image_main=new_ad.image_main,
-                                           image_2=new_ad.image_2, image_3=new_ad.image_3,
-                                           image_4=new_ad.image_4, image_5=new_ad.image_5)
+            images_valid = {}
+            for name, image in request.FILES.items():
+                images_valid[name] = image
+            print(images_valid)
+            photos = PhotosAdvertise.objects.create(title=request.user.username, **images_valid)
             new_ad.images = photos
             new_ad.save()
             return HttpResponseRedirect(reverse('advertise_list'))
