@@ -60,8 +60,9 @@ class UserView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         user = UserAvito.objects.get(id=kwargs.get('pk'))
         advertises = Advertise.objects.filter(seller=user)
-        average = rating(Feedback.objects.filter(getter_id=kwargs.get('pk')))
-        return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart, 'average': average})
+        feedbacks = Feedback.objects.filter(getter_id=kwargs.get('pk'))
+        average = rating(feedbacks)
+        return render(request, 'profiles/user_profile.html', {'user': user, 'advertises': advertises, 'cart': self.cart, 'average': average, 'quantity': len(feedbacks)})
 
 class FeedbackCreateView(CartMixin, View):
 

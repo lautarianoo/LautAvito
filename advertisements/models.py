@@ -23,7 +23,6 @@ class Category(models.Model):
         verbose_name  = 'Категория'
         verbose_name_plural = 'Категории'
 
-
 class Advertise(models.Model):
     #Модель объявления
 
@@ -31,6 +30,10 @@ class Advertise(models.Model):
         ('Новое', 'Новое'),
         ('Б/У', 'Б/У'),
     )
+
+    class Meta:
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
 
     title = models.CharField(verbose_name='Название объявления', max_length=100)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
@@ -54,10 +57,6 @@ class Advertise(models.Model):
 
     def get_main_image(self):
         return self.images.image_main
-
-    class Meta:
-        verbose_name = 'Объявление'
-        verbose_name_plural = 'Объявления'
 
 class PhotosAdvertise(models.Model):
 

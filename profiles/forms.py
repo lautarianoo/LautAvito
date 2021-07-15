@@ -35,16 +35,6 @@ class RegisterForm(forms.ModelForm):
 
 class FeedbackForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['mark'].choices = (
-        (1, 'Очень плохо'),
-        (2, 'Плохо'),
-        (3, 'Терпимо'),
-        (4, 'Нормально'),
-        (5, 'Отлично'),
-    )
-
     class Meta:
         model = Feedback
         fields = ('advertise', 'text', 'mark')

@@ -12,11 +12,11 @@ from cities.models import City
 class Feedback(models.Model):
 
     STATUS_FEEDBACK = (
-        (1, 'Очень плохо'),
-        (2, 'Плохо'),
-        (3, 'Терпимо'),
-        (4, 'Нормально'),
-        (5, 'Отлично'),
+        ('1', 'Очень плохо'),
+        ('2', 'Плохо'),
+        ('3', 'Терпимо'),
+        ('4', 'Нормально'),
+        ('5', 'Отлично'),
     )
 
     sender = models.ForeignKey('UserAvito', verbose_name='Отправитель', on_delete=models.SET_NULL, null=True)

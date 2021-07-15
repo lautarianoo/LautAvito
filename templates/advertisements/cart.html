@@ -17,7 +17,7 @@
 {% for advertise in cart.advertisements.all %}
     <tr>
       <th scope="row"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}">{{ advertise.title }}</a></th>
-        <td class="w-25"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}"><img src="{{ advertise.image.url }}" class="img-fluid"></a></td>
+        <td class="w-25"><a href="{% url 'advertise_detail' pk=advertise.id category=advertise.category.slug %}"><img src="{{ advertise.get_main_image.url }}" class="img-fluid" width="100" height="100"></a></td>
       <td>{{ advertise.price }} руб.</td>
       <td>{{ advertise.date_add }}</td>
         <td>{{ advertise.city.title }},  {{ advertise.district.title }}
