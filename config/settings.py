@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'cities',
     'profiles',
     'crispy_forms',
-    'specs',
 ]
 
 MIDDLEWARE = [

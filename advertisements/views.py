@@ -1,14 +1,12 @@
 from django.contrib import messages
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.generic import DetailView
-
 from .models import *
 from django.views import View
 from .mixins import CartMixin
 from .forms import AdvertiseForm
+from utils.translate import month_translate
 
 class AdvertisementsCategoryList(CartMixin, View):
     #Список объявлений
