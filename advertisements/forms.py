@@ -2,6 +2,7 @@ from django import forms
 from .models import Advertise
 from cities.models import District
 from advertisements.mixins import DistrictMixin
+from .models import Category
 
 class AdvertiseForm(forms.ModelForm):
 
@@ -17,4 +18,3 @@ class AdvertiseForm(forms.ModelForm):
         fields = (
             'category', 'title', 'status', 'city', 'district', 'street', 'price', 'description'
         )
-

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'advertisements',
     'cities',
     'profiles',
+    'dialogs',
+
     'crispy_forms',
 ]
 
