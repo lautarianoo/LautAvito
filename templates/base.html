@@ -35,6 +35,9 @@
                             <li style="margin-right: 20px">
                                 <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="{% url 'logout' %}">Выйти</a>
                             </li>
+                            <li>
+                                <a href="{% url 'chats' %}">Сообщения</a>
+                            </li>
                         {% endif %}
                         <li class="nav-item">
                             {% if request.user.is_authenticated %}

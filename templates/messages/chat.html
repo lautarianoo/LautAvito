@@ -1,5 +1,55 @@
 {% extends 'base.html' %}
-
+{% load companion_tag %}
 {% block content %}
 
+<div class="row mt-3">
+    {% for chat in chats %}
+        <a href="{% url 'messages' pk=chat.id %}">
+        {% if chat.message_set.count != 0 %}
+                {% with last_message=chat.message_set.last %}
+                    {% get_companion user chat as companion %}
+    <div class="card mb-3" style="max-width: 300px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ chat.advertise.get_main_image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ companion.first_name }} {{ companion.last_name }}</h5>
+        <p class="card-text">{{ chat.advertise.title }}</p>
+         {% if chat.message_set.count != 0 %}
+             {% if companion != last_message.author %}
+        <p class="card-text"><small class="text-muted">Я: {{ last_message.message|truncatechars_html:"200"|safe|striptags  }}</small></p>
+                 {% else %}
+                    <p class="card-text"><small class="text-muted">{{ last_message.message|truncatechars_html:"200"|safe|striptags  }}</small></p>
+                 {% endif %}
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+ {% endwith %}
+            </a>
+        {% else %}
+                    {% get_companion user chat as companion %}
+            <a href="{% url 'messages' pk=chat.id %}">
+    <div class="card mb-3" style="max-width: 300px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ chat.advertise.get_main_image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ companion.first_name }} {{ companion.last_name }}</h5>
+        <p class="card-text">{{ chat.advertise.title }}</p>
+        <p class="card-text"><small class="text-muted">Нет сообщений</small></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+            </a>
+        {% endif %}
+{% endfor %}
+</div>
 {% endblock content %}

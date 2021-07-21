@@ -8,6 +8,7 @@ class Chat(models.Model):
 
     advertise = models.ForeignKey(Advertise, verbose_name='Объявление', on_delete=models.CASCADE)
     member = models.ManyToManyField(User, verbose_name='Участники чата', related_name='chat')
+    start_user = models.ForeignKey(User, verbose_name='Пользователь, начавший диалог', related_name='chats', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.id}"
