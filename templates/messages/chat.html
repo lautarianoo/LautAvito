@@ -32,6 +32,7 @@
             </a>
         {% else %}
                     {% get_companion user chat as companion %}
+            {% if chat.start_user == request.user %}
             <a href="{% url 'messages' pk=chat.id %}">
     <div class="card mb-3" style="max-width: 300px;">
   <div class="row g-0">
@@ -49,6 +50,7 @@
   </div>
 </div>
             </a>
+            {% endif %}
         {% endif %}
 {% endfor %}
 </div>

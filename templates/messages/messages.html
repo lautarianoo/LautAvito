@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load companion_tag %}
+{% block content %}
+{% if chat %}
+<section class="chat">
+{% for message in chat.message_set.all %}
+    {% get_companion user chat as companion %}
 
-</body>
-</html>
+    {% if message.author == companion %}
+  <div class="message message--user-1">
+    <time class="message__time">{{ message.pub_date }}</time>
+    <figure class="message__author-pic">
+      <img src="{{ message.author.avatar.url }}" width="50" height="50">
+    </figure>
+    <div class="message__text">
+      <p>{{ message.message|safe }}</p>
+    </div>
+  </div>
+      {% else %}
+  <div class="message message--user-2">
+    <time class="message__time">{{ message.pub_date }}</time>
+    <figure class="message__author-pic">
+      <img src="{{ message.author.avatar.url }}" width="50" height="50">
+    </figure>
+    <div class="message__text">
+      <p>{{ message.message|safe }}</p>
+    </div>
+  </div>
+
+    {% endif %}
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Отправить</button>
+</form>
+</section>
+{% endif %}
+
+{% endblock content %}

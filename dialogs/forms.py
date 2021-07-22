@@ -5,5 +5,5 @@ class MessageForm(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ('message')
+        fields = ('message', )
         labels = {'message': ""}
