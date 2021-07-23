@@ -43,11 +43,12 @@ class CreateDialogView(View):
     def get(self, request, *args, **kwargs):
         advertise = Advertise.objects.get(id=kwargs.get('pk'))
         componion = advertise.seller
-        chats = Chat.objects.filter(member__in=[request.user.id, componion.id])
+        chats = Chat.objects.filter(member__in=[request.user.id, componion.id], advertise=advertise)
         if chats.count() == 0:
             chat = Chat.objects.create(start_user=request.user, advertise=advertise)
             chat.member.add(request.user)
             chat.member.add(componion)
+            chat.save()
         else:
             chat = chats.first()
         return redirect(reverse('messages', kwargs={'pk': chat.id}))
