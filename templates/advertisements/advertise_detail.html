@@ -22,10 +22,13 @@
     <div class="col-md-8">
         <h3>{{ advertise.price }} ₽</h3>
         <hr>
+    {% if request.user != advertise.seller %}
         <a href="{% url 'add-to-card' pk=advertise.id %}"><button class="btn btn-success mb-3">Добавить в понравившиеся</button></a>
     <a href="{% url 'create-dialog' pk=advertise.id %}"><button class="btn btn-primary mb-3">Написать продавцу</button></a>
+    {% endif %}
         {% if request.user == advertise.seller %}
             <p>Продавец - <a href="{% url 'profile' %}">{{ advertise.seller.first_name }} {{ advertise.seller.last_name }}</a></p>
+            <p>Телефон - {{ advertise.seller.phone }}</p>
         {% else %}
         <p>Продавец - <a href="{% url 'profile_user' pk=advertise.seller.id %}">{{ advertise.seller.first_name }} {{ advertise.seller.last_name }}</a></p>
         {% endif %}

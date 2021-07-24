@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cities',
     'profiles',
     'dialogs',
+    'ajax',
 
     'crispy_forms',
 ]
