@@ -4,12 +4,13 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from cities.models import City
-from .forms import LoginForm, RegisterForm, FeedbackForm, SettingsForm
+from .forms import LoginForm, RegisterForm, FeedbackForm, SettingsForm, AcceptEmailForm
 from django.views import View
 from advertisements.mixins import CartMixin
 from .models import UserAvito, Feedback
 from advertisements.models import Advertise
 from utils.rating import rating
+from utils.send_email import send_email
 
 class LoginView(CartMixin, View):
 
@@ -114,3 +115,18 @@ class SettingsView(CartMixin, View):
             form = SettingsForm(initial={'first_name': user.first_name, 'last_name': user.last_name, 'username': user.username,
                                      'email': user.email, 'phone': user.phone})
             return render(request, 'profiles/settings.html', {'form': form, 'cart': self.cart})
+
+class AcceptEmail(View):
+
+    def get(self, request, *args, **kwargs):
+        form = AcceptEmailForm()
+        send_email(request.user.email, form.right_key)
+        return render(request, 'profiles/accept_email.html', {'accept_form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = AcceptEmailForm(request.POST or None)
+        if form.is_valid():
+            request.user.status_email = True
+            request.user.save()
+            return redirect('profile')
+        return render(request, 'profiles/accept_email.html', {'accept_form': form})

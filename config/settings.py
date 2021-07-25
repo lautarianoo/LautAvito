@@ -135,6 +135,12 @@ BOOTSTRAP3 = {
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'emailsenddjango@gmail.com'
+EMAIL_HOST_PASSWORD = 'lautariano'
+EMAIL_PORT = 587
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

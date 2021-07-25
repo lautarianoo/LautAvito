@@ -75,6 +75,7 @@ class UserAvito(AbstractBaseUser):
     feedbacks = models.ManyToManyField(Feedback, verbose_name='Отзывы', related_name='user', blank=True)
     advertises = models.ManyToManyField('advertisements.Advertise', verbose_name='Объявления', related_name='user', blank=True)
     email = models.EmailField(verbose_name='Email', unique=True)
+    status_email = models.BooleanField(default=False, verbose_name='Подтверждён email')
     avatar = models.ImageField(verbose_name='Аватарка', blank=True, null=True)
     company = models.BooleanField(verbose_name='Компания или нет', default=False)
     city = models.ForeignKey(City, verbose_name='Город', on_delete=models.SET_NULL, null=True, related_name='user_related')

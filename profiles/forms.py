@@ -1,6 +1,7 @@
 from django import forms
 from .models import UserAvito
 from .models import UserAvito, Feedback
+from utils.send_email import generate_key
 
 class LoginForm(forms.Form):
 
@@ -51,3 +52,14 @@ class SettingsForm(forms.ModelForm):
     class Meta:
         model = UserAvito
         fields = ('first_name', 'last_name', 'username', 'phone')
+
+class AcceptEmailForm(forms.Form):
+
+    right_key = generate_key()
+    key = forms.CharField(label='Код')
+
+    def clean(self, *args, **kwargs):
+        key = self.cleaned_data['key']
+        if key != self.right_key:
+            raise forms.ValidationError('Неправильный код')
+        return self.cleaned_data

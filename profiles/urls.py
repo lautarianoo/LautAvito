@@ -9,5 +9,6 @@ urlpatterns = [
     path('settings/', views.SettingsView.as_view(), name='settings'),
     path('user/<int:pk>/', views.UserView.as_view(), name='profile_user'),
     path('user/<int:pk>/feedback-add/', views.FeedbackCreateView.as_view(), name='feedback-add'),
-    path('user/<int:pk>/feedbacks/', views.FeedbackView.as_view(), name='feedbacks_user')
+    path('user/<int:pk>/feedbacks/', views.FeedbackView.as_view(), name='feedbacks_user'),
+    path('settings/accept_email/', views.AcceptEmail.as_view(), name='accept_email'),
 ]

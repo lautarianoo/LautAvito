@@ -7,5 +7,9 @@
         {{ form.as_p }}
         <button type="submit" class="btn btn-success">Сохранить изменения</button>
     </form>
+    <hr>
+    {% if not request.user.status_email %}
+        <a href="{% url 'accept_email' %}" style="text-decoration: none">ПОДТВЕРДИТЬ EMAIL и ПОЛУЧИТЬ КОД</a>
+    {% endif %}
 
 {% endblock content %}
