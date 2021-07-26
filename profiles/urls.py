@@ -11,4 +11,5 @@ urlpatterns = [
     path('user/<int:pk>/feedback-add/', views.FeedbackCreateView.as_view(), name='feedback-add'),
     path('user/<int:pk>/feedbacks/', views.FeedbackView.as_view(), name='feedbacks_user'),
     path('settings/accept_email/', views.AcceptEmail.as_view(), name='accept_email'),
+    path('delete-dialog/<int:pk>/', views.DeleteDialog.as_view(), name='delete-dialog'),
 ]

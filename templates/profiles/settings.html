@@ -9,7 +9,8 @@
     </form>
     <hr>
     {% if not request.user.status_email %}
-        <a href="{% url 'accept_email' %}" style="text-decoration: none">ПОДТВЕРДИТЬ EMAIL и ПОЛУЧИТЬ КОД</a>
+        <H3>EMAIL не подтверждён</H3>
+        <a href="{% url 'accept_email' %}" style="text-decoration: none">ПОЛУЧИТЬ КОД И ПОДТВЕРДИТЬ</a>
     {% endif %}
 
 {% endblock content %}

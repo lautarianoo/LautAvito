@@ -27,6 +27,7 @@
       </div>
     </div>
   </div>
+    <a class="btn btn-warning mb-2 mr-auto" href="{% url 'delete-dialog' pk=chat.id %}">Удалить переписку</a>
 </div>
  {% endwith %}
             </a>
@@ -48,6 +49,7 @@
       </div>
     </div>
   </div>
+        <a class="btn btn-warning mb-2" href="{% url 'delete-dialog' pk=chat.id %}">Удалить переписку</a>
 </div>
             </a>
             {% endif %}

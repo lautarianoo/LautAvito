@@ -2,6 +2,12 @@
 {% load companion_tag %}
 {% block content %}
 {% if chat %}
+    <a href="{% url 'advertise_detail' pk=chat.advertise.id category=chat.advertise.category.slug %}" style="text-decoration: none; color: black">
+    <p>{{ chat.advertise.title }}</p>
+    <img src="{{ chat.advertise.get_main_image.url }}" width="130" height="130" alt="">
+    <h5>{{ chat.advertise.price }} рублей</h5>
+    </a>
+     <hr>
 <section class="chat">
 {% for message in chat.message_set.all %}
     {% get_companion user chat as companion %}

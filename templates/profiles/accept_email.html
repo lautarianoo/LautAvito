@@ -2,6 +2,7 @@
 
 {% block content %}
     <h3>ПОДТВЕРЖДЕНИЕ EMAIL</h3>
+    <p>На вашу почту отправлено письмо с кодом, введите его в поле ниже.</p>
     <form method="post" action="" class="form-control">
         {% csrf_token %}
         {{ accept_form.as_p }}

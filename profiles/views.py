@@ -11,6 +11,7 @@ from .models import UserAvito, Feedback
 from advertisements.models import Advertise
 from utils.rating import rating
 from utils.send_email import send_email
+from dialogs.models import Chat
 
 class LoginView(CartMixin, View):
 
@@ -119,9 +120,11 @@ class SettingsView(CartMixin, View):
 class AcceptEmail(View):
 
     def get(self, request, *args, **kwargs):
-        form = AcceptEmailForm()
-        send_email(request.user.email, form.right_key)
-        return render(request, 'profiles/accept_email.html', {'accept_form': form})
+        if not request.user.email:
+            form = AcceptEmailForm()
+            send_email(request.user.email, form.right_key)
+            return render(request, 'profiles/accept_email.html', {'accept_form': form})
+        return redirect('settings')
 
     def post(self, request, *args, **kwargs):
         form = AcceptEmailForm(request.POST or None)
@@ -130,3 +133,10 @@ class AcceptEmail(View):
             request.user.save()
             return redirect('profile')
         return render(request, 'profiles/accept_email.html', {'accept_form': form})
+
+class DeleteDialog(View):
+
+    def get(self, request, *args, **kwargs):
+        dialog = Chat.objects.get(id=kwargs.get('pk'))
+        dialog.delete()
+        return redirect('chats')
